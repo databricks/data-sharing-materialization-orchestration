@@ -124,7 +124,7 @@ def main():
     args = parse_args()
 
     if "recipient" in args:
-      recipient = args["recipient"]
+      recipient = sanitize(args["recipient"])
       try:
         spark.sql(f"SET RECIPIENT {recipient}")
       except:
