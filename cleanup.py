@@ -45,7 +45,7 @@ def main():
     """
     args = parse_args()
     materialization_full_table_name = sanitize(args["materialization_full_table_name"])
-    spark.sql(f"DROP TABLE {materialization_full_table_name}")
+    spark.sql(f"DROP TABLE IF EXISTS {materialization_full_table_name}")
     
 if __name__ == '__main__':
     main()
