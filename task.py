@@ -144,12 +144,9 @@ def main():
 
     materialization_full_table_name = sanitize(args["materialization_full_table_name"])
 
-    ## Override existing table if it already exists
-    spark.sql(f"DROP TABLE IF EXISTS {materialization_full_table_name}")
-
     ## Must create table like this otherwise there will be schema mismatch
     columns = ",".join(generate_sql_columns(df))
-    create_table_statement = f"CREATE TABLE {materialization_full_table_name} ({columns}) TBLPROPERTIES (delta.enableChangeDataFeed = true, delta.enableDeletionVectors = false, responseFormat = 'delta')"
+    create_table_statement = f"CREATE OR REPLACE TABLE {materialization_full_table_name} ({columns}) TBLPROPERTIES (delta.enableChangeDataFeed = true, delta.enableDeletionVectors = false, responseFormat = 'delta')"
     spark.sql(create_table_statement)
     
     ## Insert from dataframe
