@@ -15,7 +15,13 @@ def main():
         spark.sql(f"REFRESH FOREIGN TABLE {table_full_name}")
     elif "schema" in args:
         schema_full_name = sanitize(args["schema"])
-        spark.sql(f"REFRESH FOREIGN SCHEMA {schema_full_name}")
+        """
+        We use SHOW TABLES instead of REFRESH FOREIGN SCHEMA because REFRESH 
+        FOREIGN SCHEMA refreshes table-level metadata of every table in addition 
+        to schema metadata, while SHOW TABLES only refreshes schema metadata.
+        As such, SHOW TABLES is faster.
+        """
+        spark.sql(f"SHOW TABLES IN {schema_full_name}")
 
 if __name__ == '__main__':
     main()
