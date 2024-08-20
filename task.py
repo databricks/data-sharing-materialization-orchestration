@@ -102,7 +102,7 @@ def generate_sql_columns(df):
       is_nullable = field.nullable,
       metadata = field.metadata
     )
-    columns.append(f"{col_name} {col_type}")
+    columns.append(f"`{col_name}` {col_type}")
   return columns
 
 def main():
