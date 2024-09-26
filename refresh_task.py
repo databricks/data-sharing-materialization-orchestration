@@ -14,8 +14,12 @@ def main():
         table_full_name = sanitize(args["table"])
         spark.sql(f"REFRESH FOREIGN TABLE {table_full_name}")
     elif "schema" in args:
-        for schema_full_name in args["schema"]:
-            schema_full_name_sanitized = sanitize(schema_full_name)
+        if type(args["schema"]) is list:
+            for schema_full_name in args["schema"]:
+                schema_full_name_sanitized = sanitize(schema_full_name)
+                spark.sql(f"REFRESH FOREIGN SCHEMA {schema_full_name_sanitized}")
+        elif type(args["schema"]) is str:
+            schema_full_name_sanitized = sanitize(args["schema"])
             spark.sql(f"REFRESH FOREIGN SCHEMA {schema_full_name_sanitized}")
 
 if __name__ == '__main__':
